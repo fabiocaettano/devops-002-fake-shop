@@ -64,19 +64,19 @@ spec:
         - name: DB_PASSWORD
           value: Pg1234
         - name: DB_NAME
-          value: ecommerce                 
+          value: ecommerce
         - name: FLASK_APP
           value: index.py
-
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: fakeshop
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: fakeshop
   ports:
   - port: 80
     targetPort: 5000    
+    nodePort: 30000

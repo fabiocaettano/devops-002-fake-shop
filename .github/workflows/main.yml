@@ -7,7 +7,7 @@ on:
 
 jobs:
     CI:
-        runs-on: ubunut-latest
+        runs-on: ubuntu-latest
         steps:
             - run: echo "Obter-codigo"
             - run: echo "Executar o Docker Build

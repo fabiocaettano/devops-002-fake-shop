@@ -46,7 +46,7 @@ k3d cluster delete
 ```
 
 
-## Doccker
+## Docker
 
 Iniciar o serviço no wsl:
 ```
@@ -100,3 +100,54 @@ kubectl port-forward pod/postgre-69f8d54cc-qmmts 5432:5432
 kubectl port-forward service/fakeshop 5000:80
 ```
 
+## Acessar aplicação
+
+### Para acessar aplicação localmente (Node Port)
+
+É necessário expor aplicação através do port-forward e ajustar o service do manifesto que criar os objetos do kubernetes:
+
+Comando:
+
+```
+kubectl port-forward service/fakeshop 5000:80
+```
+
+Service:
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: fakeshop
+spec:
+  type: NodePort
+  selector:
+    app: fakeshop
+  ports:
+  - port: 80
+    targetPort: 5000
+    nodePort: 30000
+```
+
+### Para acessar aplicação externamente (Load Balancer)
+
+Necessário criar o cluster Kubernetes em um serviço de nuvem.
+Fazer o download do arquivo "config".
+Este arquivo deve ser colocado na pasta "~/.kube".
+Realizar o deployment, o service abaixo com o tipo LoadBalancer que irá reservar um IP.
+
+Service:
+
+``` service
+apiVersion: v1
+kind: Service
+metadata:
+  name: fakeshop
+spec:
+  type: LoadBalancer
+  selector:
+    app: fakeshop
+  ports:
+  - port: 80
+    targetPort: 5000
+```

@@ -100,6 +100,12 @@ kubectl port-forward pod/postgre-69f8d54cc-qmmts 5432:5432
 kubectl port-forward service/fakeshop 5000:80
 ```
 
+Retornar versão anterior:
+```
+kubectl rollout history deployment fakeshop
+kubectl rollout undo deployment fakeshop
+```
+
 ## Acessar aplicação
 
 ### Para acessar aplicação localmente (Node Port)

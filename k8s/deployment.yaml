@@ -42,7 +42,7 @@ kind: Deployment
 metadata:
   name: fakeshop
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
       app: fakeshop
@@ -74,10 +74,9 @@ kind: Service
 metadata:
   name: fakeshop
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: fakeshop
   ports:
   - port: 80
-    targetPort: 5000
-    nodePort: 30000
+    targetPort: 5000    

@@ -11,10 +11,17 @@ jobs:
         steps:
             - name: Obtendo o código
               uses: actions/checkout@v4.2.2  
+            
+            - name: Set env as secret and print debug info
+              env:
+                DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+              run: |
+                echo "Environment variable DOCKERHUB_USERNAME is set."
 
             - name: Debug Secrets
-              run: |               
-               echo "DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}"                     
+              run: |                           
+
+               echo "DOCKERHUB_USERNAME: ${{ env.DOCKERHUB_USERNAME }}                     
                echo "DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}"
 
             - name: Login to Docker Hub

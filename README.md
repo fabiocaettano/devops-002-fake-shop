@@ -1,5 +1,33 @@
 # Fake Shop
 
+### Pipeline CI/CD
+
+main.yaml
+
+```
+name: CI-CD
+
+on:
+    push:
+        branches: ["develop"]
+    workflow_dispatch:
+
+jobs:
+    CI:
+        runs-on: ubuntu-latest
+        steps:
+            - run: echo "Obter-codigo"
+            - run: echo "Executar o Docker Build"
+            - run: echo "Enviar a imagem Docker para o Docker Hub"
+    CD:
+        needs: [CI]
+        runs-on: ubuntu-latest
+        steps:
+            - run: echo "Obter-codigo"
+            - run: echo "Configurar o Kubeconfig"
+            - run: echo "Executar o apply"
+  ```
+
 
 ## Variável de Ambiente
 

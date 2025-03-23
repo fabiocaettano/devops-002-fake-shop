@@ -47,4 +47,4 @@ jobs:
                 manifests: |
                     k8s/deployment.yaml
                 images: |
-                    fabiocaettano74/fake-shop-desafio:v${{ github.run_number }}     
+                    ${{ vars.DOCKERHUB_USERNAME }}/fake-shop-desafio:v${{ github.run_number }}     

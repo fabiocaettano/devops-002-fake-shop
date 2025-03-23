@@ -39,7 +39,8 @@ jobs:
             
             - name: Debug Secrets
               run: |                
-                echo "DOCKERHUB_USERNAME ${{ secrets.K8S_KUBECONFIG }}"                                   
+                echo "DOCKERHUB_USERNAME: ${{ secrets.K8S_KUBECONFIG }}"                                   
+                echo "WORKSPACE: ${{ github.workspace }}
 
             - uses: azure/k8s-set-context@v4
               with:

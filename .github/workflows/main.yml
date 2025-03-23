@@ -36,6 +36,10 @@ jobs:
         steps:
             - name: Obtendo o código
               uses: actions/checkout@v4.2.2  
+            
+            - name: Debug Secrets
+              run: |                
+                echo "DOCKERHUB_USERNAME ${{ secrets.K8S_KUBECONFIG }}"                                   
 
             - uses: azure/k8s=set=context@v4
               with:

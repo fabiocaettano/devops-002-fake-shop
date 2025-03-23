@@ -32,7 +32,7 @@ jobs:
                 tags: ${{ vars.DOCKERHUB_USERNAME }}/fake-shop-desafio:v${{ github.run_number }}
     CD:
         needs: [CI]
-        runs-on: ubuntu-latest
+        runs-on: self-hosted
         steps:
             - name: Obtendo o código
               uses: actions/checkout@v4.2.2  
@@ -41,7 +41,12 @@ jobs:
               run: |                
                 echo "DOCKERHUB_USERNAME: ${{ secrets.K8S_KUBECONFIG }}"                                   
                 echo "WORKSPACE: ${{ github.workspace }}"
-              
+
+            - name: Install K3D
+              run: |
+                  curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+                  k3d --version              
+                  
             - name: Load image into K3D cluster
               run: k3d image import ${{ vars.DOCKERHUB_USERNAME }}/fake-shop-desafio:v${{ github.run_number }} -c k3d-k3s-default
 

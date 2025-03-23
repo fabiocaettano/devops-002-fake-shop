@@ -32,7 +32,7 @@ jobs:
                 tags: ${{ vars.DOCKERHUB_USERNAME }}/fake-shop-desafio:v${{ github.run_number }}
     CD:
         needs: [CI]
-        runs-on: self-hosted
+        runs-on: ubuntu-latest
         steps:
             - name: Obtendo o código
               uses: actions/checkout@v4.2.2  

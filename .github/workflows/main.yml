@@ -41,15 +41,14 @@ jobs:
               run: |                
                 echo "DOCKERHUB_USERNAME: ${{ secrets.K8S_KUBECONFIG }}"                                   
                 echo "WORKSPACE: ${{ github.workspace }}"
+              
+            - name: Load image into K3D cluster
+              run: k3d image import ${{ vars.DOCKERHUB_USERNAME }}/fake-shop-desafio:v${{ github.run_number }} -c k3d-k3s-default
 
-            - uses: azure/k8s-set-context@v4
-              with:
-                method: kubeconfig
-                kubeconfig: ${{ secrets.K8S_KUBECONFIG }} 
-            
-            - uses: Azure/k8s-deploy@v5
-              with:
-                manifests: |                
-                    k8s/deployment.yaml
-                images: |
-                    ${{ vars.DOCKERHUB_USERNAME }}/fake-shop-desafio:v${{ github.run_number }}                                   
+            - name: Deploy to K3D
+              run: |
+                  kubectl apply -f kubernetes/deployment.yaml
+                  kubectl apply -f kubernetes/service.yaml
+              env:
+                KUBECONFIG: ${{ github.workspace }}/${{ secrets.K8S_KUBECONFIG }}
+                

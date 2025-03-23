@@ -125,7 +125,7 @@ kubectl logs pod/postgre-69f8d54cc-qmmts
 Expor aplicação:
 ```
 kubectl port-forward pod/postgre-69f8d54cc-qmmts 5432:5432
-kubectl port-forward service/fakeshop 5000:80
+kubectl port-forward service/fakeshop 8080:80
 ```
 
 Retornar versão anterior:
@@ -185,3 +185,34 @@ spec:
   - port: 80
     targetPort: 5000
 ```
+
+
+CD:
+        needs: [CI]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Obtendo o código
+              uses: actions/checkout@v4.2.2  
+            
+            - name: Debug Secrets
+              run: |                
+                echo "DOCKERHUB_USERNAME: ${{ secrets.K8S_KUBECONFIG }}"                                   
+                echo "WORKSPACE: ${{ github.workspace }}"
+
+            - name: Install K3D
+              run: |
+                  curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+                  k3d --version              
+            
+            - name: Create K3D cluster
+              run: k3d cluster create mycluster
+                  
+            - name: Load image into K3D cluster
+              run: k3d image import ${{ vars.DOCKERHUB_USERNAME }}/fake-shop-desafio:v${{ github.run_number }} -c mycluster
+
+            - name: Deploy to K3D
+              run: |
+                  kubectl apply -f kubernetes/deployment.yaml
+                  kubectl apply -f kubernetes/service.yaml
+              env:
+                  KUBECONFIG: ${{ github.workspace }}/.kube/config              

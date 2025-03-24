@@ -43,9 +43,7 @@ jobs:
       
         - name: Deployment
           uses: Azure/k8s-deploy@v5
-          with:
-            context: ./k8s
-            file: ./k8s/deployment.yaml                    
+          with:            
             manifests: |
               k8s/deployment.yaml                    
             images: |  

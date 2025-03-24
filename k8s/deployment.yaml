@@ -73,7 +73,7 @@ kind: Service
 metadata:
   name: fakeshop
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: fakeshop
   ports:
